@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<link href="[[+site.themeRoot]]themes/common/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="[[+site.themeRoot]]themes/[[+site.theme]]/css/[[+site.theme]].css" rel="stylesheet" type="text/css" media="all"/>
+
+</head>
+<body>
+<header id="pageHeader">
+	<div class="container">
+		<div class="row">
+			<div class="span-t12 span-s4 span-s-push8 text-right hidden-t">
+				[[if &subject=`[[+site.search]]` &operator=`!empty` &then=`
+				<form action="[[+site.toRoot]]_search_results.html" class="searchForm">
+					<input type="search" name="q" id="tipue_search_input" placeholder="Search">
+				</form>
+				`]]
+			</div>
+			<div class="span-t8 span-s8 span-s-pull4">
+				<span class="header">[[+site.name]]</span>
+			</div>
+			<div class="span-t4 text-right visible-t mobileIcons">
+				<div id="viewSearch"><i class="fa fa-search"></i></div>
+				<div id="viewSlideInMenu"><i class="fa fa-bars"></i> <span class="sr-only">MENU</span></div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div id="pageBody">
+	<div class="container">
+		<nav class="row">
+			<div class="span-s2 hidden-t no-right-gutter">
+
+				<ul class="mainMenu slideInMenu">
+					[[+site.mainMenu]]
+				</ul>
+
+			</div>
+			<div class="span-t12 span-s9 offset-s1">
+
+				[[if &subject=`[[+page.versions]]` &operator=`!empty` &then=`
+				<div class="text-right">
+					<div class="versionSelectControl">
+						<select id="versionSelectControl">
+							[[+page.versions]]
+						</select>
+					</div>
+				</div>
+				`]]
+
+				<h1>[[+page.title]]</h1>
+				[[+page.content]]
+
+			</div>
+		</nav>
+
+	</div>
+</div>
+
+<footer id="pageFooter">
+	<div class="container">
+		[[+site.copyright]]
+	</div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="[[+site.themeRoot]]themes/common/js/prism.js"></script>
+<script type="text/javascript" src="[[+site.themeRoot]]themes/common/js/fusionCSS.js"></script>
+<script src="[[+site.themeRoot]]themes/[[+site.theme]]/js/[[+site.theme]].js"></script>
+
+[[if &subject=`[[+site.search]]` &operator=`!empty` &then=`
+<script type="text/javascript" src="[[+site.toRoot]]tipuesearch_content.js"></script>
+<script type="text/javascript" src="[[+site.themeRoot]]themes/common/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="[[+site.themeRoot]]themes/common/tipuesearch/tipuesearch.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$('#tipue_search_input').tipuesearch({
+			'base_url': ''
+		});
+	});
+</script>
+`]]
+
+</body>
+</html>
