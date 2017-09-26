@@ -146,16 +146,4 @@ class generatorApp extends flCliApp {
 
 		$this->output->writeLn('Memory Usage: ' . (memory_get_peak_usage(true) / 1024 / 1024) . " MiB\n", flCliOutput::CYAN);
 	}
-
-	/**
-	 * Display the help text.
-	 */
-	function showHelp() {
-		echo "\033[33mUsage:\n";
-		echo "\033[0m  fusionLib.docs [options]\n\n";
-		echo "\033[32m  --help           \033[0mThis help page\n";
-		echo "\033[32m  --source         \033[0mThe folder to load the source documentation from\n";
-		echo "\033[32m  --destination    \033[0mThe folder to write the generated documentation to\n";
-		echo "\n";
-	}
 }
