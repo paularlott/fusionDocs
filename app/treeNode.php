@@ -120,7 +120,7 @@ class treeNode {
 		$page->folder = $addTo;
 
 		// If index.md then move to 1st in list
-		if($page->name == 'index.md') {
+		if($page->name == 'index.md' || $page->name == '_index.md') {
 			array_unshift($addTo->pages, $page);
 			$addTo->hasIndex = true;
 		}
@@ -180,49 +180,6 @@ class treeNode {
 	}
 
 	/**
-	 * Write the HTML output.
-	 *
-	 * @param flCliOutput $output The console output object.
-	 * @param string $path The output path.
-	 * @param flTemplateEngineLite $tpl The template engine.
-	 * @param string $defaultLayout The default layout.
-	 * @param string $rootDocPath The path to the root document or '' if root.
-	 * @param compiler $compiler The compiler object.
-	 */
-	function writeOutput($output, $path, $tpl, $defaultLayout, $rootDocPath, $compiler) {
-
-		if(count($this->pages)) {
-			@mkdir($path, 0777, true);
-
-			// Calculate path to the root
-			$pathToRoot = '';
-			$node = $this->parent;
-			while($node) {
-				$pathToRoot .= '../';
-				$node = $node->parent;
-			}
-
-			$tpl->setPlaceholder('site.toRoot', $pathToRoot);
-			$tpl->setPlaceholder('site.themeRoot', $rootDocPath . $pathToRoot);
-
-			foreach($this->pages as $page) {
-
-				// Generate the page HTML
-				$template = $page->generateHTML($tpl, $defaultLayout, $compiler);
-
-				// Store the page
-				file_put_contents($path . $page->outputFile, $template);
-				$output->writePadded("  $page->outputFile", 50)
-					->writeLn('[Ok]', flCliOutput::GREEN);
-			}
-		}
-
-		foreach($this->children as $child) {
-			$child->writeOutput($output, $path . $child->name . '/', $tpl, $defaultLayout, $rootDocPath, $compiler);
-		}
-	}
-
-	/**
 	 * Get the search index data.
 	 * @param flCliOutput $output The console output object.
 	 * @return string The search data.
@@ -232,19 +189,6 @@ class treeNode {
 		$this->_getSearchIndex($output, '', $searchIndex);
 
 		return 'var tipuesearch = {"pages": ' . json_encode($searchIndex) . '};';
-	}
-
-	/**
-	 * Build the search index and write it.
-	 *
-	 * @param flCliOutput $output The console output object.
-	 * @param string $path The output path.
-	 */
-	function writeSearchIndex($output, $path) {
-		file_put_contents(
-			$path . 'tipuesearch_content.js',
-			$this->getSearchIndex($output)
-		);
 	}
 
 	/**

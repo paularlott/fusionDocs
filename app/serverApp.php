@@ -32,59 +32,81 @@ class serverApp extends flCliApp {
 			throw new flCliException('The documentation source folder is not readable');
 		}
 
-		// Create the compiler and set the source
-		$compiler = new compiler($this);
-		$compiler->setSource($source);
+		// Load the document set
+		$docSet = new documentSet($this, $source);
+		$versions = $docSet->getVersions();
 
-		// Compile the page
-		$page = $compiler->generatePage($segs);
+		// Get the 1st version
+		$compilingVersion = reset($versions);
+
+		// If segments see if the 1st one matches a version
+		if(count($segs) && count($versions) > 1) {
+			// Look to see if one of our versions
+			foreach($versions as $ver) {
+				if($ver->label == $segs[0]) {
+					$compilingVersion = $ver;
+					array_shift($segs);
+					break;
+				}
+			}
+		}
+
+		// Get the page by URL
+		$page = $compilingVersion->getPageByURL($segs);
 
 		$source = realpath($source) . '/';
 
 		// 404 not found
 		if(!$page) {
-			// Test if the file is present in the source
-			if(is_readable($file = $source . implode('/', $segs))) {
-				header('Content-Type: ' . flMimeTypes::getType($file));
-				header('Content-Length: ' . filesize($file));
-				readfile($file);
-			}
-			// Test if themes
-			else if(isset($segs[0]) && $segs[0] == 'themes' && is_readable($file = FLROOTPATH . '/' . implode('/', $segs))) {
-				header('Content-Type: ' . flMimeTypes::getType($file));
-				header('Content-Length: ' . filesize($file));
-				readfile($file);
-			}
-			// Else 404
-			else {
-				$this->pageNotFound();
-			}
-		}
-		// If got a page
-		elseif($page['content']) {
-			echo $page['content'];
-		}
-		// Else looking for an asset
-		else {
-			$file = $source . implode('/', $page['realPath']) . '/' . $page['page'];
 
-			// If file found
-			if(is_readable($file)) {
-				header('Content-Type: ' . flMimeTypes::getType($page['page']));
-				header('Content-Length: ' . filesize($file));
-				readfile($file);
-			}
-			// If after search data
-			else if($page['page'] == 'tipuesearch_content.js') {
-				$idx = $compiler->getSearchIndex($segs);
+			// Get the file name from the path
+			$segsTmp = $segs;
+			$file = array_pop($segsTmp);
+
+			// If search data
+			if($file == 'tipuesearch_content.js') {
+				$idx = $compilingVersion->root->getSearchIndex(null);
 				header('Content-Type: ' . flMimeTypes::getType('js'));
 				header('Content-Length: ' . strlen($idx));
 				echo $idx;
+				return;
+			}
+			// Convert the path to a real path
+			else if($path = $compilingVersion->realPathFromURL($segsTmp)) {
+				$filename = $source . $path . $file;
+			}
+			// If theme file
+			else if(isset($segs[0]) && $segs[0] == 'themes') {
+				$filename = FLROOTPATH . implode('/', $segs);
+			}
+			else {
+				$filename = $source . implode('/', $segs);
+			}
+
+			// Test if the file is present in the source
+			if(is_readable($filename)) {
+				header('Content-Type: ' . flMimeTypes::getType($filename));
+				header('Content-Length: ' . filesize($filename));
+				readfile($filename);
 			}
 			// Else 404
 			else {
 				$this->pageNotFound();
 			}
+		}
+		else {
+			$relPath = str_repeat('../', max(0, count($segs) - 1));
+
+			// Setup template variables
+			$compilingVersion->tpl->setPlaceholder(
+				[
+					'site.mainMenu'  => $page->folder->getNav('', $page),
+					'page.versions'  => $docSet->buildVersionList(implode('/', $segs), $compilingVersion),
+					'site.toRoot'    => $relPath,
+					'site.themeRoot' => $relPath
+				]
+			);
+			echo $page->generateHTML($compilingVersion->tpl, $docSet->getConfigVal('layout', 'default'));
 		}
 	}
 

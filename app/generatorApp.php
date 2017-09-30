@@ -52,6 +52,12 @@ class generatorApp extends flCliApp {
 				'The output destination'
 			)
 			->addOption(
+				'format',
+				flCliCommand::OPTIONAL,
+				'html',
+				'The output format (html)'
+			)
+			->addOption(
 				'help',
 				flCliCommand::OPTIONAL,
 				null,
@@ -136,12 +142,9 @@ class generatorApp extends flCliApp {
 				throw new flCliException('The documentation source folder is not readable');
 			}
 
-			// Create the compiler and set the source
-			$compiler = new compiler($this);
-			$compiler->setSource($source);
-
-			// Get the output
-			$compiler->generateOutput($command->getOption('destination'));
+			$docset = new documentSet($this, $source);
+			$siteGen = new outputStaticSite($this);
+			$siteGen->writeOutput($command->getOption('destination'), $docset);
 		}
 
 		$this->output->writeLn('Memory Usage: ' . (memory_get_peak_usage(true) / 1024 / 1024) . " MiB\n", flCliOutput::CYAN);

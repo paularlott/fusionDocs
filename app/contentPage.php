@@ -98,15 +98,10 @@ class contentPage {
 
 		// Set the file extension for the output file
 		$this->outputFile = strtolower($this->outputFile . '.html');
-	}
 
-	/**
-	 * Get the navigation relative to this page.
-	 *
-	 * @return string The HTML for the navigation.
-	 */
-	function getNav() {
-		return $this->folder->getNav('', $this);
+		// If output file is _index.html then loose the leading _
+		if($this->outputFile == '_index.html')
+			$this->outputFile = 'index.html';
 	}
 
 	/**
@@ -114,10 +109,10 @@ class contentPage {
 	 *
 	 * @param flTemplateEngineLite $tpl The template engine.
 	 * @param string $defaultLayout The default layout to use.
-	 * @param compiler $compiler The compiler object.
+	 * @param bool $forceLayout true to force use of $defaultLayout; else false to allow the page to override it.
 	 * @return string The page HTML.
 	 */
-	function generateHTML($tpl, $defaultLayout, $compiler) {
+	function generateHTML($tpl, $defaultLayout, $forceLayout = false) {
 		$parsedown = new Parsedown();
 		$content = $parsedown->text($this->content);
 
@@ -150,17 +145,12 @@ class contentPage {
 		);
 
 		return $tpl->parseChunk(
-			isset($this->frontMatter['layout'])
+			isset($this->frontMatter['layout']) && !$forceLayout
 				? $this->frontMatter['layout']
 				: $defaultLayout,
 			[
-
-				'site.mainMenu' => $this->getNav(),
 				'page.title'    => $this->title,
-				'page.content'  => $content,
-				'page.versions' => $compiler->buildVersionList(
-					preg_replace('/\.md$/', '.html', strtolower(preg_replace('#(^|/)\d+_#', '$1', $this->path)))
-				)
+				'page.content'  => $content
 			]
 		);
 	}
