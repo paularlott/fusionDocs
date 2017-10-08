@@ -136,17 +136,22 @@ class documentVersion {
 			new RecursiveCallbackFilterIterator($directory, $filter)
 		);
 
+		// Sort the results
+		$iterator = new flUtilSortingIterator($iterator, function($a, $b) {
+			return $a->getPathname() > $b->getPathname();
+		});
+
 		// Find all the Markdown files in the document directory
-		foreach ($iterator as $filename => $file) {
+		foreach ($iterator as $file) {
 			/** @var SplFileInfo $file */
 
 			// Make file relative to document root
-			$shortPath = substr($filename, strlen($path));
+			$shortPath = substr($file->getPathname(), strlen($path));
 
 			// If markdown file
-			if(preg_match('/\.md$/', $filename)) {
+			if(preg_match('/\.md$/', $file->getFilename())) {
 				$page = new contentPage();
-				$page->realpath = $filename;
+				$page->realpath = $file->getPathname();
 				$page->path = $shortPath;
 
 				// Load the document and parse out the front matter
@@ -159,7 +164,7 @@ class documentVersion {
 			else {
 				// Skip the layout folder & .DS_Store
 				if(!preg_match('#^layouts/#', $shortPath) && !preg_match('#\.DS_Store#', $shortPath))
-					$this->assets[$filename] = strtolower(preg_replace('#(^|/)\d+_#', '$1', $shortPath));
+					$this->assets[$file->getPathname()] = strtolower(preg_replace('#(^|/)\d+_#', '$1', $shortPath));
 			}
 		}
 
