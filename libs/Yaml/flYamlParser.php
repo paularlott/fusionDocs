@@ -108,7 +108,7 @@ class flYamlParser {
 			// Staying at same depth
 			else {
 				// Sort out values
-				if(empty($val))
+				if(empty($val) && !preg_match('/^0+$/', $val))
 					$val = [];
 				elseif($val == '~' || $val == 'null')
 					$val = null;
