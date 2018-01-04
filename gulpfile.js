@@ -3,7 +3,6 @@ var gulp = require('gulp'),
 
 plugins.fs = require('fs');
 plugins.del = require('del');
-plugins.panini = require('panini');
 
 var themeTaskList = [];
 

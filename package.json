@@ -1,7 +1,7 @@
 {
-  "name": "fusionCSS",
-  "version": "2.0.0",
-  "description": "Responsive CSS framework",
+  "name": "fusionDocs",
+  "version": "0.0.1",
+  "description": "Markdown to Documenation Generator",
   "dependencies": {},
   "devDependencies": {
     "del": "^2.2.2",
@@ -12,16 +12,15 @@
     "gulp-less": "^3.3.2",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
-    "gulp-load-plugins": "^1.5.0",
-    "panini": "^1.5.1"
+    "gulp-load-plugins": "^1.5.0"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/fusionCSS/fusionCSS.git"
+    "url": "git://github.com/paularlott/fusionDocs"
   },
   "author": "Paul Arlott",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fusionCSS/fusionCSS/issues"
+    "url": "https://github.com/paularlott/fusionDocs/issues"
   }
 }
