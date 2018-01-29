@@ -3,7 +3,7 @@ $(document).ready(function() {
 	/**
 	 * Make header sticky
 	 */
-	$('#pageHeader').makeSticky({offset: 1});
+	$('#pageHeader').stickyOnScroll();
 
 	/**
 	 * Main menu navigation
