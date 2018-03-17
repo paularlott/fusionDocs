@@ -37,12 +37,12 @@ try {
 		->writePadded(' ' . $e->getMessage() . ' ', 70, flCliOutput::WHITE, flCliOutput::RED)
 		->newline()
 		->writePadded('', 70, flCliOutput::WHITE, flCliOutput::RED)
-		->newline()
+/*		->newline()
 		->writePadded(' ' . $e->getFile(), 70, flCliOutput::WHITE, flCliOutput::RED)
 		->newline()
 		->writePadded(' On line ' . $e->getLine(), 70, flCliOutput::WHITE, flCliOutput::RED)
 		->newline()
-		->writePadded('', 70, flCliOutput::WHITE, flCliOutput::RED)
+		->writePadded('', 70, flCliOutput::WHITE, flCliOutput::RED)*/
 		->newline()
 		->newline();
 }
