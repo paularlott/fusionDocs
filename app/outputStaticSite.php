@@ -6,7 +6,7 @@
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package fusionDocs
- * @copyright Copyright (c) 2017 clearFusionCMS. All rights reserved.
+ * @copyright Copyright (c) 2017 - 2018 clearFusionCMS. All rights reserved.
  * @link http://fusionlib.com
  */
 
@@ -37,6 +37,7 @@ class outputStaticSite {
 	 *
 	 * @param string $outputDir The destination folder.
 	 * @param documentSet $docSet The document set to generate the output from.
+	 * @throws flCliException
 	 */
 	function writeOutput($outputDir, $docSet) {
 		$outputDir = rtrim($outputDir, '/') . '/';

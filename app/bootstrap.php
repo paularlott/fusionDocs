@@ -8,7 +8,7 @@
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package fusionDocs
- * @copyright Copyright (c) 2017 clearFusionCMS. All rights reserved.
+ * @copyright Copyright (c) 2017 - 2018 clearFusionCMS. All rights reserved.
  * @link http://fusionlib.com
  */
 

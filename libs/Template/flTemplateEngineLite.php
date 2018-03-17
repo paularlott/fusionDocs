@@ -6,7 +6,7 @@
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package fusionLib
- * @copyright Copyright (c) 2007 - 2017 fusionLib. All rights reserved.
+ * @copyright Copyright (c) 2007 - 2018 fusionLib. All rights reserved.
  * @link http://fusionlib.com
  */
 
@@ -77,7 +77,7 @@ class flTemplateEngineLite {
 	 * @return flTemplateEngineLite This object.
 	 */
 	function addChunkPath($path) {
-		array_unshift($this->chunkPaths, realpath($path) . '/');
+		array_unshift($this->chunkPaths, rtrim($path, '/') . '/');
 		return $this;
 	}
 
@@ -88,7 +88,7 @@ class flTemplateEngineLite {
 	 * @return flTemplateEngineLite This object.
 	 */
 	function addSnippetPath($path) {
-		array_unshift($this->snippetPaths, realpath($path) . '/');
+		array_unshift($this->snippetPaths, rtrim($path, '/') . '/');
 		return $this;
 	}
 

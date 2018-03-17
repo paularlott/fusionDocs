@@ -6,7 +6,7 @@
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @package fusionDocs
- * @copyright Copyright (c) 2017 clearFusionCMS. All rights reserved.
+ * @copyright Copyright (c) 2017 - 2018 clearFusionCMS. All rights reserved.
  * @link http://fusionlib.com
  */
 
@@ -78,13 +78,14 @@ class documentVersion {
 	 * @param array $exclude The list of files and folders to exclude.
 	 * @param array $config The site configuration.
 	 * @return documentVersion This object
+	 * @throws flExceptionPHP
 	 */
 	function loadSource($basePath, $exclude, $config) {
 		$path = realpath($basePath . $this->path) . '/';
 
 		// Create the template engine and initialise the base paths
 		$this->tpl
-			->addChunkPath('./layouts')
+			->addChunkPath(FLROOTPATH . 'layouts')
 			->addChunkPath($basePath . 'layouts');
 
 		if(!empty($this->path))
