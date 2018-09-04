@@ -18,17 +18,19 @@ themeList.forEach(function (theme) {
 	// Create the tasks
 
 	// Less
-	gulp.task(
-		theme + '_css',
-		function() {
-			return gulp.src('./themes_src/' + theme + '/less/' + theme + '_theme.less')
-				.pipe(plugins.less())
-				.pipe(plugins.cleanCss())
-				.pipe(plugins.rename(cssfile + '.css'))
-				.pipe(gulp.dest('./themes/' + theme + '/css/'));
-		}
-	)
-	themeTaskList.push(theme + '_css');
+	if(theme != 'common') {
+		gulp.task(
+			theme + '_css',
+			function () {
+				return gulp.src('./themes_src/' + theme + '/less/' + theme + '_theme.less')
+					.pipe(plugins.less())
+					.pipe(plugins.cleanCss())
+					.pipe(plugins.rename(cssfile + '.css'))
+					.pipe(gulp.dest('./themes/' + theme + '/css/'));
+			}
+		)
+		themeTaskList.push(theme + '_css');
+	}
 
 	// JS
 	gulp.task(
@@ -46,14 +48,14 @@ themeList.forEach(function (theme) {
 /**
  * Watch files for changes
  */
-gulp.task('watch', themeTaskList, function() {
+gulp.task('watch', function() {
 	gulp.watch([
-		'./themes_src/**/less/*.less',
-		'./themes_src/**/js/*.js'
-	], themeTaskList);
+		'./themes_src/*/less/*.less',
+		'./themes_src/*/js/*.js'
+	], gulp.parallel(themeTaskList));
 });
 
 /**
  * Default build task
  */
-gulp.task('default', themeTaskList);
+gulp.task('default', gulp.parallel(themeTaskList));
