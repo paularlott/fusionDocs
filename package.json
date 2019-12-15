@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Markdown to Documenation Generator",
   "dependencies": {
-    "npm": "^5.10.0"
+    "npm": "^6.13.4"
   },
   "devDependencies": {
     "del": "^2.2.2",
